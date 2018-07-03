@@ -27,7 +27,9 @@ This service might be a little confusing at first. This section talks about how 
 
 > Note: this relies on the `serverless-azure-functions` plugin, and therefore, before you can deploy, you simply need to run `npm install`.
 
-The following environment variables must be set, with their respective values:
+First, you must get a Twitch API key, from https://dev.twitch.tv/start - we'll use it for `<yourTwitchApiKey>` below.
+
+Then, the following environment variables must be set, with their respective values:
 
 - *azureSubId* - ID of the Azure subscription you want to create your service within
 - *azureServicePrincipalTenantId* - ID of the tenant that your service principal was created within
@@ -39,7 +41,7 @@ For details on how to create a service principal and/or acquire your Azure accou
 Once your Azure credentials are set, you can immediately deploy your service via the following command:
 
 ```shell
-serverless deploy
+serverless deploy --twitchApiKey <yourTwitchApiKey>
 ```
 
 This will create the necessary Azure resources to support the service and events that are defined in `serverless.yml` file.

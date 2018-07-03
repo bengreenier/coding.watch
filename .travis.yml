@@ -6,4 +6,4 @@ after_success:
   # requires azure env vars, as per readme
   - npm install
   - npm i -g serverless
-  - sls deploy --twitchApiKey ${twitchApiKey}
+  - serverless deploy --twitchApiKey ${twitchApiKey}
