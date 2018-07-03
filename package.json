@@ -1,0 +1,28 @@
+{
+  "name": "coding.watch-backend",
+  "version": "1.0.0",
+  "description": "The backend for https://coding.watch",
+  "main": "handler.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "azure",
+    "serverless"
+  ],
+  "devDependencies": {
+    "debug": "^3.1.0",
+    "eslint": "^5.0.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "serverless-azure-functions": "*"
+  },
+  "dependencies": {
+    "mocha": "^5.2.0",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2"
+  }
+}
