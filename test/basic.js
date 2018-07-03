@@ -18,6 +18,7 @@ describe('getStream', () => {
       .expect((mock) => {
         assert.equal(mock.res.status, 200)
         assert.deepEqual(mock.res.body, JSON.stringify(expectedBody.data[0]))
+        assert.deepEqual(mock.res.headers, { 'Content-Type': 'application/json' })
       })
 
     // we also define our own request library implementation
@@ -59,7 +60,10 @@ describe('getStream', () => {
         const mock = createContext(done)
           .expect((mock) => {
             assert.equal(mock.res.status, 200)
-            assert.ok(mock.res.body.length > 0)
+            assert.ok(mock.res.body.toString().length > 0)
+            const parsedLogin = JSON.parse(mock.res.body)
+            assert.ok(parsedLogin !== undefined)
+            assert.deepEqual(mock.res.headers, { 'Content-Type': 'application/json' })
           })
 
         // invoke

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>coding.watch | Discover coding streams, live, right now</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="Discover coding streams, live, right now">
+  <meta name="keywords" content="Twitch,Developer,Coding,Stream,Streams,Discovery">
+  <meta name="author" content="Ben Greenier">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div id="twitch-embed"></div>
+
+  <script src="https://embed.twitch.tv/embed/v1.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.js" integrity="sha256-VpQSBEw4wr6j5/6GsK33LrAE6Eq6+/Tq3JUbcCak6XY=" crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+    fetch('https://api.coding.watch')
+      .then((res) => {
+        return res.json()
+      })
+      .then((stream) => {
+        return new Twitch.Embed("twitch-embed", {
+          channel: stream.login,
+          width: '80%', /* TODO(bengreenier): fix */
+          height: '800px', /* TODO(bengreenier): fix */
+          autoplay: false
+        })
+      })
+      .then((embed) => {
+        embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
+          var player = embed.getPlayer()
+          player.play()
+        })
+    })
+  </script>
+</body>
+</html>
