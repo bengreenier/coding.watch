@@ -41,7 +41,9 @@ module.exports = function getStream (context) {
 
           // sadly we need to specify json ourselves (see #1)
           context.res.headers = {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': 'https://coding.watch',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS'
           }
         })
     }).catch((err) => {
