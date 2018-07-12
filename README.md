@@ -2,7 +2,7 @@
 
 Discover coding streams, live, right now 📺🔴
 
-![coding.watch gif](#TODO)
+![coding.watch example](.github/example.png)
 
 Coding streams are starting to become popular which is great news! However, it can be tough to find new content in a sea of content creators across a variety of platforms.
 https://coding.watch aims to help - It works by showing different coding streams that are live __right now__. Find something you enjoy? Like, follow, and subscribe. 😎
@@ -45,6 +45,12 @@ serverless deploy --twitchApiKey <yourTwitchApiKey>
 ```
 
 This will create the necessary Azure resources to support the service and events that are defined in `serverless.yml` file.
+
+## Development
+
+> Note: you may be warned to set `twitchApiKey` as an environment variable - see above for more details.
+
+To run things locally, simply run `npm install & npm start` in your dev environment. 
 
 ## Issues / Feedback / Feature Requests?
 

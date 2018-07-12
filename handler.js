@@ -27,7 +27,7 @@ module.exports = function getStream (context) {
 
           const selectedUser = userBody.data[0].login
 
-          context.log(`selected ${selectedStream.user_id} is ${selectedUser})`)
+          context.log(`selected ${selectedStream.user_id} is ${selectedUser}`)
 
           // add the login info in as well
           selectedStream.login = selectedUser

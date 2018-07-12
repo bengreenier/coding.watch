@@ -4,6 +4,7 @@
   "description": "The backend for https://coding.watch",
   "main": "handler.js",
   "scripts": {
+    "start": "node local.js",
     "test": "mocha"
   },
   "keywords": [
@@ -18,10 +19,12 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
+    "serve-handler": "^3.3.0",
     "serverless-azure-functions": "*"
   },
   "dependencies": {
     "mocha": "^5.2.0",
+    "replacestream": "^4.0.3",
     "request": "^2.87.0",
     "request-promise": "^4.2.2"
   }

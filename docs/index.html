@@ -11,72 +11,113 @@
   <link href="normalize.css" rel="stylesheet"></link>
   <link href="skeleton.css" rel="stylesheet"></link>
   <style>
-  #twitch-embed {
+  #twitch-video {
     background-color: black;
     min-height: 50rem;
+  }
+
+  #twitch-chat {
+    background-color: black;
+    min-height: 50rem;
+    display: none;
+  }
+
+  /* https://benmarshall.me/responsive-iframes */
+  .intrinsic-container {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+  }
+  
+  /* 16x9 Aspect Ratio */
+  .intrinsic-container-16x9 {
+    padding-bottom: 56.25%;
+  }
+
+  /* 4x3 Aspect Ratio */
+  .intrinsic-container-4x3 {
+    padding-bottom: 75%;
+  }
+  
+  .intrinsic-container iframe {
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Larger than tablet - Skeleton */
+  @media (min-width: 750px) {
+    #twitch-chat {
+      display: block;
+    }
   }
   </style>
 </head>
 <body>
   <!-- .container is main centered wrapper -->
-<div class="container">
-  <div class="row">
-    <div class="12 columns">
-      <center>
-        <h3>coding.watch <small>Discover coding streams, live, right now. 📺🔴</small></h3>
-      </center>
+  <div class="container">
+    <div class="row">
+      <div class="12 columns">
+        <center>
+          <h3>coding.watch <small>Discover coding streams, live, right now. 📺🔴</small></h3>
+        </center>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="12 columns" id="twitch-embed">&nbsp;</div>
-  </div>
+    <div class="row" style="width: 100vw !important; margin-left: calc(-50vw + 50%) !important;">
+      <div class="nine columns intrinsic-container" id="twitch-video">&nbsp;</div>
+      <div class="three columns intrinsic-container" id="twitch-chat">&nbsp;</div>
+    </div>
+
+    <div class="row">&nbsp;</div>
 
     <!-- columns should be the immediate child of a .row -->
     <div class="row">
-      <div class="one column">One</div>
-      <div class="eleven columns">Eleven</div>
+      <div class="twelve columns">
+        <h5>What is this?</h5>
+        <p><b>Coding streams are starting to become popular</b> which is great news! <b>However, it can be tough to find new content</b> in a sea of content creators across a variety of platforms. <b><a href="https://coding.watch">https://coding.watch</a> aims to help</b> - It works by showing different coding streams that are live right now. Find something you enjoy? Like, follow, and subscribe. 😎</p>
+        <p>There's really amazing folks doing super cool things, live, right now. I built this to help make finding them easier. Largely inspired by <a href="https://lonelystreams.com">https://lonelystreams.com</a>. 💙</p>
+        <p>Want to help make <a href="https://coding.watch">https://coding.watch</a> better? Get involved on <a href="https://github.com/bengreenier/coding.watch">GitHub</a>. 🚀</p>
+      </div>
     </div>
-  
-    <!-- just use a number and class 'column' or 'columns' -->
-    <div class="row">
-      <div class="two columns">Two</div>
-      <div class="ten columns">Ten</div>
-    </div>
-  
-    <!-- there are a few shorthand columns widths as well -->
-    <div class="row">
-      <div class="one-third column">1/3</div>
-      <div class="two-thirds column">2/3</div>
-    </div>
-    <div class="row">
-      <div class="one-half column">1/2</div>
-      <div class="one-half column">1/2</div>
-    </div>
-  
+
+    <footer>
+      <p>Made with 💙 by <a href="https://twitter.com/bengreenier">@bengreenier</a>.</p>
+    </footer>
   </div>
-
-  <script src="https://embed.twitch.tv/embed/v1.js"></script>
+  <!-- javascript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.js" integrity="sha256-VpQSBEw4wr6j5/6GsK33LrAE6Eq6+/Tq3JUbcCak6XY=" crossorigin="anonymous"></script>
-
+  <script type="text/template" id="twitch-video-template">
+    <div class="intrinsic-container-16x9">
+    <iframe
+        src="http://player.twitch.tv/?channel={login}&muted=false"
+        frameborder="0"
+        scrolling="no"
+        allowfullscreen="true"></iframe>
+    </div>
+  </script>
+  <script type="text/template" id="twitch-chat-template">
+    <div class="intrinsic-container-unknown-size">
+    <iframe frameborder="0"
+        scrolling="yes"
+        id="chat_embed"
+        src="http://www.twitch.tv/embed/{login}/chat?darkpopout"></iframe>
+    </div>
+  </script>
   <script type="text/javascript">
-    fetch('https://api.coding.watch')
+    // note: in dev mode, the local server will replace this string at runtime
+    fetch('https://api.coding.watch/api/getStream')
       .then((res) => {
         return res.json()
       })
       .then((stream) => {
-        return new Twitch.Embed("twitch-embed", {
-          channel: stream.login,
-          width: '80%', /* TODO(bengreenier): fix */
-          height: '800px', /* TODO(bengreenier): fix */
-          autoplay: false
-        })
+        var videoTpl = document.getElementById('twitch-video-template').innerText
+        var chatTpl = document.getElementById('twitch-chat-template').innerText
+
+        document.getElementById('twitch-video').innerHTML = videoTpl.replace(/\{login\}/g, stream.login)
+        document.getElementById('twitch-chat').innerHTML = chatTpl.replace(/\{login\}/g, stream.login)
       })
-      .then((embed) => {
-        embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
-          var player = embed.getPlayer()
-          player.play()
-        })
-    })
   </script>
 </body>
 </html>
