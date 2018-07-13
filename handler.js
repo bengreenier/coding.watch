@@ -36,14 +36,11 @@ module.exports = function getStream (context) {
           // populate the response
           context.res.status = 200
 
-          // sadly, we need to json stringify this to avoid some azure runtime issues (see #1)
-          context.res.body = JSON.stringify(selectedStream)
+          context.res.body = selectedStream
 
           // sadly we need to specify json ourselves (see #1)
           context.res.headers = {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': 'https://coding.watch',
-            'Access-Control-Allow-Methods': 'GET, OPTIONS'
+            'Content-Type': 'application/json'
           }
         })
     }).catch((err) => {
