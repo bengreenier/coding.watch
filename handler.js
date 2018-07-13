@@ -11,6 +11,13 @@ const communityIds = [
   /* ai */ '7a533c6d-961b-4be7-9b7b-6e17fd00eb3e'
 ]
 
+const gameIds = [
+  /* creative */ '488191',
+  /* programming */ '458688',
+  /* game developer */ '488469',
+  /* irl */ '494717'
+]
+
 /* eslint-disable no-param-reassign */
 
 module.exports = function getStream (context) {
@@ -22,33 +29,39 @@ module.exports = function getStream (context) {
     .then((body) => {
       if (!body) throw new Error(`Missing stream content`)
 
-      const selectedStream = body.data[Math.floor(Math.random() * body.data.length)]
-
-      context.log(`selected ${selectedStream.id} ${selectedStream.title} (${selectedStream.viewer_count})`)
-
+      return body.data
+    })
+    .then((data) => {
+      return data.filter(e => gameIds.indexOf(e.game_id) !== -1)
+    })
+    .then((data) => {
+      // pick a random one :smile:
+      return data[Math.floor(Math.random() * data.length)]
+    })
+    .then((data) => {
       // sadly we need another api call for the username (see #2)
-      return req(`https://api.twitch.tv/helix/users?id=${selectedStream.user_id}`, {headers: {'Client-ID': process.env.twitchApiKey}, json: true})
-        .then((userBody) => {
-          if (!userBody) throw new Error(`Missing user content`)
+      return req(`https://api.twitch.tv/helix/users?id=${data.user_id}`, {headers: {'Client-ID': process.env.twitchApiKey}, json: true})
+        .then((body) => {
+          if (!body) throw new Error(`Missing user content`)
 
-          const selectedUser = userBody.data[0].login
-
-          context.log(`selected ${selectedStream.user_id} is ${selectedUser}`)
+          const selectedUser = body.data[0].login
 
           // add the login info in as well
-          selectedStream.login = selectedUser
-        })
-        .then(() => {
-          // populate the response
-          context.res.status = 200
+          data.login = selectedUser
 
-          context.res.body = selectedStream
-
-          // sadly we need to specify json ourselves (see #1)
-          context.res.headers = {
-            'Content-Type': 'application/json'
-          }
+          return data
         })
+    })
+    .then((data) => {
+      // populate the response
+      context.res.status = 200
+
+      context.res.body = data
+
+      // sadly we need to specify json ourselves (see #1)
+      context.res.headers = {
+        'Content-Type': 'application/json'
+      }
     }).catch((err) => {
       context.log(err)
       context.res.status = 500
