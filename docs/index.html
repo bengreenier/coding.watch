@@ -11,12 +11,12 @@
   <link href="normalize.css" rel="stylesheet"></link>
   <link href="skeleton.css" rel="stylesheet"></link>
   <style>
-  #twitch-video {
+  #content-video {
     background-color: black;
     min-height: 50rem;
   }
 
-  #twitch-chat {
+  #content-chat {
     background-color: black;
     min-height: 50rem;
     display: none;
@@ -49,7 +49,7 @@
 
   /* Larger than tablet - Skeleton */
   @media (min-width: 750px) {
-    #twitch-chat {
+    #content-chat {
       display: block;
     }
   }
@@ -66,8 +66,8 @@
       </div>
     </div>
     <div class="row" style="width: 100vw !important; margin-left: calc(-50vw + 50%) !important;">
-      <div class="nine columns intrinsic-container" id="twitch-video">&nbsp;</div>
-      <div class="three columns intrinsic-container" id="twitch-chat">&nbsp;</div>
+      <div class="nine columns intrinsic-container" id="content-video">&nbsp;</div>
+      <div class="three columns intrinsic-container" id="content-chat">&nbsp;</div>
     </div>
 
     <div class="row">&nbsp;</div>
@@ -105,6 +105,23 @@
         src="https://www.twitch.tv/embed/{login}/chat?darkpopout"></iframe>
     </div>
   </script>
+  <script type="text/template" id="yt-video-template">
+    <div class="intrinsic-container-16x9">
+      <iframe frameborder="0"
+        allow="autoplay; encrypted-media"
+        scrolling="no"
+        allowfullscreen="true"
+        src="https://www.youtube.com/embed/{video}?autoplay=1" ></iframe>
+    </div>
+  </script>
+  <script type="text/template" id="yt-chat-template">
+    <div class="intrinsic-container-unknown-size">
+    <iframe frameborder="0"
+        scrolling="yes"
+        id="chat_embed"
+        src="https://www.youtube.com/live_chat?v={video}&embed_domain=https://coding.watch"></iframe>
+    </div>
+  </script>
   <script type="text/javascript">
     // note: in dev mode, the local server will replace this string at runtime
     fetch('https://api.coding.watch/api/getStream')
@@ -112,11 +129,21 @@
         return res.json()
       })
       .then((stream) => {
-        var videoTpl = document.getElementById('twitch-video-template').innerText
-        var chatTpl = document.getElementById('twitch-chat-template').innerText
+        if (stream.src === 'twitch') {
+          var videoTpl = document.getElementById('twitch-video-template').innerText
+          var chatTpl = document.getElementById('twitch-chat-template').innerText
 
-        document.getElementById('twitch-video').innerHTML = videoTpl.replace(/\{login\}/g, stream.login)
-        document.getElementById('twitch-chat').innerHTML = chatTpl.replace(/\{login\}/g, stream.login)
+          document.getElementById('content-video').innerHTML = videoTpl.replace(/\{login\}/g, stream.login)
+          document.getElementById('content-chat').innerHTML = chatTpl.replace(/\{login\}/g, stream.login)
+        } else if (stream.src === 'youtube') {
+          var videoTpl = document.getElementById('yt-video-template').innerText
+          var chatTpl = document.getElementById('yt-chat-template').innerText
+          
+          document.getElementById('content-video').innerHTML = videoTpl.replace(/\{video\}/g, stream.id.videoId)
+          document.getElementById('content-chat').innerHTML = chatTpl.replace(/\{video\}/g, stream.id.videoId)
+        } else {
+          throw new Error('Invalid stream source: ' + stream.src)
+        }
       })
   </script>
 </body>

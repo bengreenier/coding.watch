@@ -41,7 +41,9 @@ const server = http.createServer((request, response) => {
     }, {
       createReadStream (path) {
         // replace the api url to the local one
-        return fs.createReadStream(path).pipe(replaceStream('https://api.coding.watch/api/getStream', `http://localhost:${localPort}/api/getStream`))
+        return fs.createReadStream(path)
+          .pipe(replaceStream('https://api.coding.watch/api/getStream', `http://localhost:${localPort}/api/getStream`))
+          .pipe(replaceStream('embed_domain=https://coding.watch', `embed_domain=http://localhost:${localPort}`))
       }
     })
   }

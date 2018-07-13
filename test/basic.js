@@ -9,7 +9,7 @@ describe('getStream', () => {
     // define the expected body
     const expectedBody = {
       data: [
-        {id: '0', title: 'mock stream', viewer_count: 0}
+        {id: '0', title: 'mock stream', viewer_count: 0, game_id: '488191', login: undefined}
       ]
     }
 
@@ -20,6 +20,9 @@ describe('getStream', () => {
         assert.deepEqual(mock.res.body, JSON.stringify(expectedBody.data[0]))
         assert.deepEqual(mock.res.headers, { 'Content-Type': 'application/json' })
       })
+
+    // force twitch
+    mock.di_percentage = 1
 
     // we also define our own request library implementation
     mock.di_request = (uri, opts) => {
@@ -39,6 +42,9 @@ describe('getStream', () => {
         assert.equal(mock.res.status, 500)
         assert.equal(mock.res.body, 'mock failure')
       })
+
+    // force twitch
+    mock.di_percentage = 1
 
     // we also define our own request library implementation
     mock.di_request = (uri, opts) => {
@@ -65,6 +71,9 @@ describe('getStream', () => {
             assert.ok(parsedLogin !== undefined)
             assert.deepEqual(mock.res.headers, { 'Content-Type': 'application/json' })
           })
+
+        // force twitch
+        mock.di_percentage = 1
 
         // invoke
         getStream(mock)
