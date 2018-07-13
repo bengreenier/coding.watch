@@ -3,7 +3,13 @@
 const request = require('request-promise')
 
 /* eslint-disable standard/array-bracket-even-spacing */
-const communityIds = [ /* programming */ '9d175334-ccdd-4da8-a3aa-d9631f95610e' ]
+const communityIds = [
+  /* programming */ '9d175334-ccdd-4da8-a3aa-d9631f95610e',
+  /* unity3d */ 'beed41df-c336-40a3-ae50-db9909b360f1',
+  /* javascript */ '0883652a-f3e8-4fd1-8136-755a02157d21',
+  /* python */ 'a4c366ad-46b6-40fb-ab58-8613b2dd3f02',
+  /* ai */ '7a533c6d-961b-4be7-9b7b-6e17fd00eb3e'
+]
 
 /* eslint-disable no-param-reassign */
 
