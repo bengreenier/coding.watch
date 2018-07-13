@@ -28,7 +28,7 @@ const server = http.createServer((request, response) => {
           for (let header in mockContext.res.headers) {
             response.setHeader(header, mockContext.res.headers[header])
           }
-          response.end(mockContext.res.body)
+          response.end(typeof mockContext.res.body !== 'string' ? JSON.stringify(mockContext.res.body) : mockContext.res.body)
         }
       }
     }
