@@ -1,5 +1,7 @@
 # coding.watch
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/bengreenier/coding.watch.svg)](https://greenkeeper.io/)
+
 Discover coding streams, live, right now 📺🔴
 
 ![coding.watch example](.github/example.png)
